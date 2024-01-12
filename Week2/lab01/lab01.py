@@ -61,7 +61,11 @@ def sum_digits(y):
     6
     """
     "*** YOUR CODE HERE ***"
-
+    ans = 0
+    while y > 0:
+        ans += y % 10
+        y //= 10
+    return ans
 
 
 def double_eights(n):
@@ -80,3 +84,16 @@ def double_eights(n):
     False
     """
     "*** YOUR CODE HERE ***"
+    last_digit = n % 10
+    while n > 0:
+        # calculate the near digits
+        n //= 10
+        cur_digit = n % 10
+
+        # compare them with 8
+        if cur_digit == last_digit == 8:
+            return True
+
+        last_digit = cur_digit
+
+    return False
