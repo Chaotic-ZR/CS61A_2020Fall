@@ -168,7 +168,7 @@ def play_process(who, strategy, player_score, opponent_score, dice):
     if extra_turn(player_score, opponent_score):
         who = who
     else:
-        who = abs(who - 1)
+        who = other(who)
     return player_score, who
 
 
@@ -197,29 +197,23 @@ def play(
     say:        The commentary function to call at the end of the first turn.
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
-    # BEGIN PROBLEM 5
+    # BEGIN PROBLEM 5 & 6
     "*** YOUR CODE HERE ***"
     while True:
+        # rolling process
         if who == 0:
             # 1. player0
             score0, who = play_process(who, strategy0, score0, score1, dice)
         else:
             # 2. player1
             score1, who = play_process(who, strategy1, score1, score0, dice)
-
+        # announce
+        say = say(score0, score1)
         # judge situations
         # 1. exit
         if max(score0, score1) >= goal:
             return score0, score1
-
-    # judge situations
-    # END PROBLEM 5
-    # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
-    # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
-    # having a returned function for next round
-    # END PROBLEM 6
-    return score0, score1
+    # END PROBLEM 5 & 6
 
 
 #######################
@@ -306,6 +300,24 @@ def announce_highest(who, last_score=0, running_high=0):
     assert who == 0 or who == 1, "The who argument should indicate a player."
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+
+    # function say
+    def say(score0, score1):
+        # determine the current player
+        current_score = score1 if who else score0
+
+        # judge whether the gain is the biggest
+        gain = current_score - last_score
+        if gain > running_high:
+            print(f"{gain} point(s)! The most yet for Player {who}")
+
+        # keep the function running
+        return announce_highest(
+            who, last_score=current_score, running_high=max(gain, running_high)
+        )
+
+    # return function
+    return say
     # END PROBLEM 7
 
 
@@ -346,8 +358,15 @@ def make_averaged(original_function, trials_count=1000):
     >>> averaged_dice()
     3.0
     """
+
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    def averaged_func(*args):
+        total = 0
+        for i in range(trials_count):
+            total += original_function(*args)
+        return total / trials_count
+
+    return averaged_func
     # END PROBLEM 8
 
 
@@ -361,7 +380,15 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    averaged_dice = make_averaged(roll_dice, trials_count)
+    max_value, max_index = 0, 0
+    for i in range(1, 11):
+        current_value = averaged_dice(i, dice)
+        if current_value > max_value:
+            max_value = current_value
+            max_index = i
+    return max_index
+
     # END PROBLEM 9
 
 
@@ -410,7 +437,10 @@ def bacon_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     rolls NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 6  # Replace this statement
+    # calculate the estimate score of bacon
+    bacon_score = free_bacon(opponent_score)
+    # judge
+    return 0 if bacon_score >= cutoff else num_rolls
     # END PROBLEM 10
 
 
@@ -420,7 +450,12 @@ def extra_turn_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     Otherwise, it rolls NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 6  # Replace this statement
+    bacon_score = free_bacon(opponent_score)
+    return (
+        0
+        if extra_turn(score + bacon_score, opponent_score) or bacon_score >= cutoff
+        else num_rolls
+    )
     # END PROBLEM 11
 
 
