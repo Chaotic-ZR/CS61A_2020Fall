@@ -1,5 +1,7 @@
 # Function
 
+> 有时候离开计算机思考问题也十分重要
+
 ## Environment Diagram
 
 - 定义：环境图表是**一种记录（变量名）连接情况以及计算机程序状态的可视化工具**
@@ -26,7 +28,9 @@
 	- 不要把函数总是局限在某个特定参数的情况
 	- eg. square是pow的一个特例，所以没有必要单独写一个square的函数
 
-如何实现一个好的function
+> You are not allowed to repeat copying some certain code
+>
+> If you do, Use Functions!
 
 ### Function Test&Explanation
 
