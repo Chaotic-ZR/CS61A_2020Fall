@@ -106,6 +106,3 @@ def hailstone(n):
         times += 1
     print(1)
     return times
-
-
-a = hailstone(10)
