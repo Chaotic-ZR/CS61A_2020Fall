@@ -1,4 +1,4 @@
-# Recursion
+# Recursion(weak point)
 
 ## Basic Knowledge
 
@@ -89,8 +89,9 @@
 	         n, last = split(n)
 	         digit_sum = digit_sum + last # similar to the return of recursion
 	     return digit_sum
-	 
-	 def sum_digits_rec(n, digit_sum):
+	  
+	
+	def sum_digits_rec(n, digit_sum):
 	     """Sum digits using recursion, based on iterative version.
 	 
 	     >>> sum_digits_rec(11408855402054064613470328848384, 0)
@@ -98,13 +99,23 @@
 	     """
 	     if n == 0:
 	         return digit_sum
-	     else:
+			 else:
 	         n, last = split(n)
 	         return sum_digits_rec(n, digit_sum + last)
-	 ```
+	```
 
-#### Interation to Recursion
+#### Interation to Recursion(Useful when the recursion is hard to work out directly)
 
 - The state of an iteration can be passed as arguments
 	- `n, digit_sum` are both the state/process value of iteration(changes as iteration goes)
 - example is listed above
+- Sometimes, we need to use higher order function to create a function inside(because the original function often takes only one arguments)
+	- this is a called a helper function
+
+### Tricks
+
+#### How to alternate between 1 and 0
+
+- ```python
+	a = abs(a - 1)
+	```
