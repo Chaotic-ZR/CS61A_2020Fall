@@ -5,3 +5,4 @@ test.py
 .ok_storage.db
 *.assets
 __pycache__
+test.txt

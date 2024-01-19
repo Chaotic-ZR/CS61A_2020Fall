@@ -112,8 +112,22 @@ def max_subseq(n, t):
     5
     """
     n_in_str = str(n)
-    def find_combination(s_for_n, l)
+    combination = []
 
+    def find_combination(s, t):
+        if len(s) <= t:
+            return s
+        elif t == 0:
+            return ""
+        else:
+            combination_tmp = []
+            for i in range(len(s)):
+                combination_tmp.append(s[i] + find_combination(s[i + 1 :], t - 1))
+            combination_tmp_int = [int(x) for x in combination_tmp]
+            return str(max(combination_tmp_int))
+
+    combination_final = find_combination(n_in_str, t)
+    return int(combination_final) if combination_final != "" else 0
 
 
 def add_chars(w1, w2):
@@ -142,4 +156,8 @@ def add_chars(w1, w2):
     ...       ['For', 'While', 'Set', 'SetComp']) # Must use recursion
     True
     """
-    "*** YOUR CODE HERE ***"
+    if len(w1) == 0:
+        return w2
+    i = w2.find(w1[0])
+    if w1[0] == w2[i]:
+        return w2[:i] + add_chars(w1[1:], w2[i + 1 :])

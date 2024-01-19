@@ -17,15 +17,23 @@
 	-  ```python
 		 >>> 'here' in "Where is him?"
 		 True
-		 >>> [2, 3, 4] in [1, 2, 3, 4, 5]
+		>>> [2, 3, 4] in [1, 2, 3, 4, 5]
 		 False
-		 ```
+		```
 
 	- 
 
 - how to turn a expression inside a string into something executable
 
+	- ```python
+		s = 'x = 5 + 2; print(x)'
+		
+		>>> exec(s)
+		7
+		```
+	
 	- `exec(<expression>)`
+	
 
 ## For Statements
 
@@ -33,11 +41,11 @@
 
 -  ```python
 	 same_count = 0
-	 pairs = [[1, 2], [2, 2], [3, 2], [4, 4]]
-	 for x, y in pairs: # every element can be unpacked in this case
-	   if x == y:
-	     same_count += 1
-	 ```
+	pairs = [[1, 2], [2, 2], [3, 2], [4, 4]]
+	for x, y in pairs: # every element can be unpacked in this case
+		if x == y:
+			same_count += 1
+	```
 
 ## Advanced Sequence Operation
 
