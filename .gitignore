@@ -6,3 +6,4 @@ test.py
 *.assets
 __pycache__
 test.txt
+tests

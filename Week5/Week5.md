@@ -219,3 +219,18 @@ def fact(n):
     return n * fact(n - 1)
 ```
 
+# Experience from project "cats"
+
+When a recursion has different recursive steps, and we need the minimal step in all to reach the target
+
+below is the recursive part of a function, we can use min/max to reach the optimal solution for a question
+
+```python
+add_diff = pawssible_patches(start, goal[1:], limit - 1)
+remove_diff = pawssible_patches(start[1:], goal, limit - 1)
+substitute_diff = pawssible_patches(start[1:], goal[1:], limit - 1)
+return 1 + min(add_diff, remove_diff, substitute_diff)
+```
+
+
+

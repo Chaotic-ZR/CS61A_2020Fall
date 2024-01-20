@@ -4,7 +4,6 @@ from utils import lower, split, remove_punctuation, lines_from_file
 from ucb import main, interact, trace
 from datetime import datetime
 
-
 ###########
 # Phase 1 #
 ###########
@@ -16,7 +15,13 @@ def choose(paragraphs, select, k):
     the empty string.
     """
     # BEGIN PROBLEM 1
-    "*** YOUR CODE HERE ***"
+    for i in range(len(paragraphs)):
+        if select(paragraphs[i]) == True:
+            if k == 0:
+                return paragraphs[i]
+            else:
+                k -= 1
+    return ''
     # END PROBLEM 1
 
 
@@ -31,8 +36,13 @@ def about(topic):
     'Nice pup.'
     """
     assert all([lower(x) == x for x in topic]), 'topics should be lowercase.'
+    
     # BEGIN PROBLEM 2
-    "*** YOUR CODE HERE ***"
+    def words_in_para(paragraph):
+        word_list_for_para = split(remove_punctuation(lower(paragraph)))
+        return any([lower(x) in word_list_for_para for x in topic])
+    
+    return words_in_para
     # END PROBLEM 2
 
 
@@ -56,7 +66,11 @@ def accuracy(typed, reference):
     typed_words = split(typed)
     reference_words = split(reference)
     # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+    correct_num = 0
+    for i in range(min(len(typed_words), len(reference_words))):
+        if typed_words[i] == reference_words[i]:
+            correct_num += 1
+    return 100.0 * correct_num / len(typed_words) if len(typed_words) != 0 else 0.0
     # END PROBLEM 3
 
 
@@ -64,7 +78,7 @@ def wpm(typed, elapsed):
     """Return the words-per-minute (WPM) of the TYPED string."""
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    return len(typed) / 5 * (60/elapsed)
     # END PROBLEM 4
 
 
@@ -74,7 +88,19 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     than LIMIT.
     """
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    if user_word in valid_words:
+        return user_word
+    
+    def diff_helper(x):
+        return diff_function(user_word, x, limit)
+    
+    # diff check phase
+    min_diff_word = min(valid_words, key=diff_helper)
+    min_diff = diff_helper(min_diff_word)
+    if min_diff > limit:
+        return user_word
+    else:
+        return min_diff_word
     # END PROBLEM 5
 
 
@@ -84,31 +110,37 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    # base cases
+    if limit == -1:
+        return 1
+    elif min(len(start), len(goal)) == 0:
+        return abs(len(start) - len(goal))
+    
+    # recursive case
+    if start[0] != goal[0]:
+        return 1 + shifty_shifts(start[1:], goal[1:], limit - 1)
+    else:
+        return shifty_shifts(start[1:], goal[1:], limit)
+    
     # END PROBLEM 6
 
 
 def pawssible_patches(start, goal, limit):
     """A diff function that computes the edit distance from START to GOAL."""
-    assert False, 'Remove this line'
-
-    if ______________: # Fill in the condition
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-
-    elif ___________: # Feel free to remove or add additional cases
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-
+    # base case
+    if limit == -1:
+        return 1
+    elif min(len(start), len(goal)) == 0:
+        return abs(len(start) - len(goal))
+    
+    # recursive case
+    if start[0] == goal[0]:
+        return pawssible_patches(start[1:], goal[1:], limit)
     else:
-        add_diff = ... # Fill in these lines
-        remove_diff = ...
-        substitute_diff = ...
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
+        add_diff = pawssible_patches(start, goal[1:], limit - 1)
+        remove_diff = pawssible_patches(start[1:], goal, limit - 1)
+        substitute_diff = pawssible_patches(start[1:], goal[1:], limit - 1)
+        return 1 + min(add_diff, remove_diff, substitute_diff)
 
 
 def final_diff(start, goal, limit):
@@ -124,7 +156,20 @@ def final_diff(start, goal, limit):
 def report_progress(typed, prompt, user_id, send):
     """Send a report of your id and progress so far to the multiplayer server."""
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    # calculate progress
+    cnt = 0
+    for i in range(len(typed)):
+        if typed[i] == prompt[i]:
+            cnt += 1
+        else:
+            break
+    progress = cnt / len(prompt)
+    
+    # send information
+    data_dt = {'id': user_id, 'progress': progress}
+    send(data_dt)
+    
+    return progress
     # END PROBLEM 8
 
 
@@ -150,7 +195,13 @@ def time_per_word(times_per_player, words):
         words: a list of words, in the order they are typed.
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    # calculate time for each word
+    time_list = []
+    for i in range(len(times_per_player)):
+        cur = times_per_player[i]
+        time_list.append([cur[j + 1] - cur[j] for j in range(len(cur) - 1)])
+    
+    return game(words, time_list)
     # END PROBLEM 9
 
 
@@ -162,10 +213,15 @@ def fastest_words(game):
     Returns:
         a list of lists containing which words each player typed fastest
     """
-    player_indices = range(len(all_times(game)))  # contains an *index* for each player
-    word_indices = range(len(all_words(game)))    # contains an *index* for each word
+    player_indices, times = range(len(all_times(game))), all_times(game)  # contains an *index* for each player
+    word_indices, words = range(len(all_words(game))), all_words(game)  # contains an *index* for each word
     # BEGIN PROBLEM 10
-    "*** YOUR CODE HERE ***"
+    word_list = [[] for i in player_indices]
+    
+    for i in word_indices:
+        faster_index = min(player_indices, key=lambda x: times[x][i])
+        word_list[faster_index].append(words[i])
+    return word_list
     # END PROBLEM 10
 
 
@@ -205,6 +261,7 @@ def game_string(game):
     """A helper function that takes in a game object and returns a string representation of it"""
     return "game(%s, %s)" % (game[0], game[1])
 
+
 enable_multiplayer = False  # Change to True when you're ready to race.
 
 ##########################
@@ -228,19 +285,19 @@ def run_typing_test(topics):
         print('If you only type part of it, you will be scored only on that part.\n')
         print(reference)
         print()
-
+        
         start = datetime.now()
         typed = input()
         if not typed:
             print('Goodbye.')
             return
         print()
-
+        
         elapsed = (datetime.now() - start).total_seconds()
         print("Nice work!")
         print('Words per minute:', wpm(typed, elapsed))
         print('Accuracy:        ', accuracy(typed, reference))
-
+        
         print('\nPress enter/return for the next paragraph or type q to quit.')
         if input().strip() == 'q':
             return
@@ -254,7 +311,7 @@ def run(*args):
     parser = argparse.ArgumentParser(description="Typing Test")
     parser.add_argument('topic', help="Topic word", nargs='*')
     parser.add_argument('-t', help="Run typing test", action='store_true')
-
+    
     args = parser.parse_args()
     if args.t:
         run_typing_test(args.topic)
