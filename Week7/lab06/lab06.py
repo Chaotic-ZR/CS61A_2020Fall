@@ -19,7 +19,7 @@ def make_adder_inc(a):
     def adder(x, pas_lst=[a - 1]):
         pas_lst[0] += 1
         return pas_lst[0] + x
-    
+
     return adder
 
 
@@ -47,13 +47,13 @@ def make_fib():
     True
     """
     first, latter = 0, 1
-    
+
     def next_fib():
         nonlocal first, latter
         cur_ans = first
         first, latter = latter, first + latter
         return cur_ans
-    
+
     return next_fib
 
 
