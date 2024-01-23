@@ -75,6 +75,8 @@
 
 - it actually uses generator function
 
+- A generator can be used to represent infinite sequence
+
   - the generator function will go through every yield when a `next()` is called
 
   	 ```python 
@@ -89,3 +91,7 @@
 - when reaching `yield`, the function would act like there is a return, but after calling the another`next()`(or calling the function again), the function will resume from where it stopped.
 - So, a function with yield is actually a generator/iterator, where yield serves as a stop sign, the function will take a rest there, and move on if called again.
 - when writing a generator, we can take yield as return at beginning, and then try to convert return into yield
+
+- `yield from g` (g is a generator)
+	- It's equivalent to `for x in g: yield x `
+	- So that we yield an element we want rather than yield a generator
