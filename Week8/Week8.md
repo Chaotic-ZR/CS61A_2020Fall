@@ -28,3 +28,11 @@ class Complete_Account(CheckingAccount, SavingsAccount):
 
 - As in the example above, the `Complete Account` has both saving and checking function since it inherits from two different classes
 - However, multiple inheritance can make program complicated, which is not recommended
+
+
+
+# Project Ant
+
+- When iterating through a list's copy and modify elements inside, if elements are mutable, then elements in the original list will change as well
+
+- When using inheriting method, better use the closest one rather than the top one
