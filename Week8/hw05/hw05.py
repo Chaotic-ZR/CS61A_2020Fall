@@ -252,9 +252,9 @@ def path_yielder(t, value):
     """
     "*** YOUR CODE HERE ***"
     
-    for _______________ in _________________:
-        for _______________ in _________________:
-            "*** YOUR CODE HERE ***"
+    # for _______________ in _________________:
+    #     for _______________ in _________________:
+    #         "*** YOUR CODE HERE ***"
 
 
 class Link:
