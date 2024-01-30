@@ -76,7 +76,14 @@ def has_cycle(link):
     >>> has_cycle(u)
     False
     """
-    "*** YOUR CODE HERE ***"
+    sequence_appeared = set()
+    while link.rest is not link.empty:
+        if link.rest in sequence_appeared:
+            return True
+        else:
+            sequence_appeared.add(link.rest)
+        link = link.rest
+    return False
 
 
 def has_cycle_constant(link):
