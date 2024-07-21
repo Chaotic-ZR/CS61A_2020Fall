@@ -130,7 +130,7 @@ class Ant(Insect):
     
     implemented = False  # Only implemented Ant classes should be instantiated
     food_cost = 0
-    double_damage = False
+    double_damage = False  #
     
     # ADD CLASS ATTRIBUTES HERE
     
